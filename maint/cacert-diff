@@ -42,6 +42,9 @@ for my $spec (@opts) {
             or die "can't run @cmd: $!";
     }
 
+    # possibly a better formet to parse:
+    # openssl crl2pkcs7 -nocrl -certfile $file | openssl pkcs7 -print_certs
+
     my $state = 0;
     my $cert_name;
     my $cert_content;
@@ -80,6 +83,10 @@ for my $spec (@opts) {
 
             $cert_content .= $line;
         }
+    }
+
+    if (!keys %certs) {
+        die "can't read cert file $CACERT_PEM_FILE" . (defined $spec ? " for $spec" : "") . "!\n";
     }
 
     push @content, \%certs;
